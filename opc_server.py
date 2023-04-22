@@ -2,9 +2,9 @@ from opcua import Server
 from random import randint
 import time
 
-
+SERVER_URL = "opc.tcp://127.0.0.1:4840/UA"
 server = Server()
-server.set_endpoint("opc.tcp://localhost:4840")
+server.set_endpoint(SERVER_URL)
 
 name = "OPC_UA_TEST_SERVER"
 address_space = server.register_namespace(name)
