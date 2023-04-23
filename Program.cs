@@ -5,44 +5,23 @@ using System;
 
 namespace TestClient
 {
-    class Program
-    {
+    class Program {
         private static readonly string SERVER_URL = "opc.tcp://127.0.0.1:4840/UA";
         private static readonly ApplicationConfiguration CONFIG = new ApplicationConfiguration() {
-            ApplicationName = "TestClient",
-            ApplicationUri = $"urn:{System.Net.Dns.GetHostName()}:TestClient",
+            ApplicationName = "Test-Client",
             ApplicationType = ApplicationType.Client,
-            SecurityConfiguration = new SecurityConfiguration {
-                ApplicationCertificate = new CertificateIdentifier { StoreType = @"Directory", StorePath = @"${HOME}/.config/OPC Foundation/CertificateStores/MachineDefault", SubjectName = "Test Client" },
-                TrustedIssuerCertificates = new CertificateTrustList { StoreType = @"Directory", StorePath = @"${HOME}/.config/OPC Foundation/CertificateStores/UA Certificate Authorities" },
-                TrustedPeerCertificates = new CertificateTrustList { StoreType = @"Directory", StorePath = @"${HOME}/.config/OPC Foundation/CertificateStores/UA Applications" },
-                RejectedCertificateStore = new CertificateTrustList { StoreType = @"Directory", StorePath = @"${HOME}/.config/OPC Foundation/CertificateStores/RejectedCertificates" },
-                AutoAcceptUntrustedCertificates = true
-            },
+            SecurityConfiguration = new SecurityConfiguration { ApplicationCertificate = new CertificateIdentifier() },
             TransportConfigurations = new TransportConfigurationCollection(),
             TransportQuotas = new TransportQuotas { OperationTimeout = 15000 },
-            ClientConfiguration = new ClientConfiguration { DefaultSessionTimeout = 60000 },
-            TraceConfiguration = new TraceConfiguration()
+            ClientConfiguration = new ClientConfiguration { DefaultSessionTimeout = 60000 }
         };
 
         public static async Task Main(string[] args) {
             // Validate Configuration
-            CONFIG.Validate(ApplicationType.Client).GetAwaiter().GetResult();
-            
-            // Create Application Instance
-            ApplicationInstance application = new ApplicationInstance {
-                ApplicationName = "Test Client",
-                ApplicationType = ApplicationType.Client,
-                ApplicationConfiguration = CONFIG
-            };
-            application.CheckApplicationInstanceCertificate(false, 2048).GetAwaiter().GetResult();
-
-            // Get Endpoint
-            EndpointDescription selectedEndpoint = CoreClientUtils.SelectEndpoint(SERVER_URL, useSecurity: true);
+            await CONFIG.Validate(ApplicationType.Client);
 
             // Start Session
-            using (Session session = Session.Create(CONFIG, new ConfiguredEndpoint(null, selectedEndpoint), false, "", 60000, null, null).GetAwaiter().GetResult())
-            {
+            using (Session session = await Session.Create(CONFIG, new ConfiguredEndpoint(null, new EndpointDescription(SERVER_URL)), true, "", 6000, null, null)) {
                 // Initalise OPC UA Variables
                 NodeId NODE_TEMP = new NodeId("ns=2;i=2");
 
