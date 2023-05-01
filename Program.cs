@@ -6,7 +6,7 @@ using System;
 namespace TestClient
 {
     class Program {
-        private static readonly string SERVER_URL = "opc.tcp://127.0.0.1:4840/UA";
+        private static readonly string SERVER_URL = "opc.tcp://172.31.1.236:4840/server/";
         private static readonly ApplicationConfiguration CONFIG = new ApplicationConfiguration() {
             ApplicationName = "Test-Client",
             ApplicationType = ApplicationType.Client,
@@ -23,12 +23,12 @@ namespace TestClient
             // Start Session
             using (Session session = await Session.Create(CONFIG, new ConfiguredEndpoint(null, new EndpointDescription(SERVER_URL)), true, "", 6000, null, null)) {
                 // Initalise OPC UA Variables
-                NodeId NODE_TEMP = new NodeId("ns=2;i=2");
+                NodeId NODE_TEMP = new NodeId("ns=11;s=P1c_Extrude");
 
                 // Program Loop
                 while (true) {
                     // Polling Rate
-                    await Task.Delay(2000);
+                    await Task.Delay(500);
 
                     // Read Data
                     DataValue TEMP_DATA = await session.ReadValueAsync(NODE_TEMP);
