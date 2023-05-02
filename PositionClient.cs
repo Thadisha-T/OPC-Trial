@@ -1,9 +1,9 @@
-﻿using Opc.Ua;
+using Opc.Ua;
 using Opc.Ua.Client;
 using Opc.Ua.Configuration;
 using System;
 
-namespace TestClient
+namespace PositionClient
 {
     class Program {
         private static readonly string SERVER_URL = "opc.tcp://127.0.0.1:4840/UA";
@@ -17,7 +17,9 @@ namespace TestClient
         };
         private static readonly Random rnd = new Random();
 
+        // Rename to main when required
         public static async Task Main(string[] args) {
+            
             // Validate Configuration
             await CONFIG.Validate(ApplicationType.Client);
 
