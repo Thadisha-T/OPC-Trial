@@ -12,15 +12,20 @@ address_space = server.register_namespace(name)
 node = server.get_objects_node()
 param = node.add_object(address_space, "Parameters")
 
-temperature = param.add_variable(address_space, "Temperature", 0)
-temperature.set_writable()
+x = param.add_variable(address_space, "X", 0)
+x.set_writable()
+
+y = param.add_variable(address_space, "Y", 0)
+y.set_writable()
+
+z = param.add_variable(address_space, "Z", 0)
+z.set_writable()
 
 server.start()
 print("SERVER HAS STARTED...")
 
 while True:
-    temperature.set_value(randint(0,50))
-    print(temperature.get_value())
+    print(x.get_value(), y.get_value(), z.get_value())
     time.sleep(2)
     
 
