@@ -43,7 +43,7 @@ namespace UIClient
 
                 while (true) {
                     current.Start();
-                    await current.Run(session);
+                    current.Run(session).Wait();
                 }
             }
         }
@@ -52,7 +52,6 @@ namespace UIClient
         static void SwitchMicroservice() {
             while (true) {
                 // Ask for microservice
-                Console.WriteLine("Enter Microservice: ");
                 string input = Console.ReadLine();
 
                 // If input is valid, add to queue

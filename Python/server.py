@@ -27,5 +27,3 @@ print("SERVER HAS STARTED...")
 while True:
     print(x.get_value(), y.get_value(), z.get_value())
     time.sleep(2)
-    
-
